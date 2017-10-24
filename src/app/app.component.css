@@ -2,11 +2,12 @@
     text-align: center;
 }
 
-
 #botao_gerar {
     padding-top: 5px;
-    padding-bottom: 15px;
-    text-align: center;    
+    padding-bottom: 5px;
+    text-align: center;
+    background-color: rgb(163, 255, 232); 
+    color: black
 }
 
 #apresentacao {
