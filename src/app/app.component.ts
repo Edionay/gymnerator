@@ -12,12 +12,15 @@ export class AppComponent {
   firstName: string;
   lastName: string;
   dominioDisponivel: String;
+  botaoGerar: string = "Gerar";
 
   constructor(private http:HttpClient){
 
   }
 
   generate_gym_name(): void {
+
+    this.botaoGerar = "Gerar novamente!";
     
     let names = ['Body', 'Build', 'Force', 'Form', 'Shape', 'Energy', 'Life', 'Sport', 'Fit', 
     'Fitness', 'Tech', 'Gym', 'Smart', 'Total'];
@@ -43,6 +46,7 @@ export class AppComponent {
     let authorizationHeader = new HttpHeaders({
       "Authorization": "Basic " + user64Based
     });
+
     this.http.get("https://jsonwhoisapi.com/api/v1/whois?identifier=" + this.firstName.toLocaleLowerCase() +
     this.lastName.toLowerCase() +".com.br", {
       headers: authorizationHeader

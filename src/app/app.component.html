@@ -1,13 +1,18 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    {{title}}!
-  </h1>
-  <h2>Seu gerador pessoal de nomes de academia</h2>
+<div id="apresentacao">
+  <div class="centro">
+    <h1 class="centro">
+      {{title}}!
+    </h1>
+    <h3>Seu gerador pessoal de nomes de academia</h3>
+  </div>
+  <p class="centro">Este aplicativo tem como finalidade gerar nomes aleatórios de academia</p>
+  <div id="botao_gerar">
+    <button type="button" (click)="generate_gym_name()" class="btn btn-primary">{{ botaoGerar }}</button>  
+  </div>
 </div>
-<p>Este aplicativo tem como finalidade gerar nomes aleatórios de academia</p>
-<button type="button" (click)="generate_gym_name()" class="btn btn-primary">Generate</button>
+  
+  <h2 class="centro">{{firstName}} {{lastName}}</h2>
+  
+  <h1 class="centro">{{dominioDisponivel}}</h1>
 
-<h2>{{firstName}} {{lastName}}</h2>
-
-<h1>{{ dominioDisponivel }}</h1>
