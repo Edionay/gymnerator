@@ -7,63 +7,76 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title: string = 'Gymnerator';
+  title = 'Gymnerator';
 
   firstName: string;
   lastName: string;
   dominioDisponivel: String;
-  botaoGerar: string = "Gerar";
+  botaoGerar = 'Gerar';
+  loading = false;
 
-  constructor(private http:HttpClient){
+  constructor(private http: HttpClient) {
 
   }
 
   generate_gym_name(): void {
+    this.reset_results();
 
-    this.botaoGerar = "Gerar novamente!";
-    
-    let names = ['Body', 'Build', 'Force', 'Form', 'Shape', 'Energy', 'Life', 'Sport', 'Fit', 
+    this.loading = true
+    this.botaoGerar = 'Gerar novamente!';
+
+    const names = ['Body', 'Build', 'Force', 'Form', 'Shape', 'Energy', 'Life', 'Sport', 'Fit',
     'Fitness', 'Tech', 'Gym', 'Smart', 'Total'];
-  
-    let positions = this.getRandomItens(names, 2);
-    
-    let firstName = positions[0];
-    let lastName = positions[1];
-  
-    this.firstName = firstName;
-    this.lastName = lastName;
-  
-    this.check_domain_availability();
+
+    const positions = this.getRandomItens(names, 2);
+
+    const firstName = positions[0];
+    const lastName = positions[1];
+
+    this.check_domain_availability(firstName, lastName);
   }
 
+  check_domain_availability(firstName, lastName): void {
 
-  check_domain_availability(): void {
+    const jwaCustometId = '336218051', jwaApiKey = 'b_BKhi2KgPZnGVFj0pNV3g';
+    const user = jwaCustometId + ':' + jwaApiKey;
+    const user64Based = btoa(user);
 
-    let jwaCustometId: string = "336218051", jwaApiKey: string = "b_BKhi2KgPZnGVFj0pNV3g";
-    let user =jwaCustometId + ":" + jwaApiKey;
-    let user64Based = btoa(user);
-    
-    let authorizationHeader = new HttpHeaders({
-      "Authorization": "Basic " + user64Based
+    const authorizationHeader = new HttpHeaders({
+      'Authorization': 'Basic ' + user64Based
     });
 
-    this.http.get("https://jsonwhoisapi.com/api/v1/whois?identifier=" + this.firstName.toLocaleLowerCase() +
-    this.lastName.toLowerCase() +".com.br", {
+    this.http.get('https://jsonwhoisapi.com/api/v1/whois?identifier=' + firstName.toLocaleLowerCase() +
+    lastName.toLowerCase() + '.com.br', {
       headers: authorizationHeader
     }).subscribe(data => {
-      let disponivel: boolean = data["registered"];
-      this.dominioDisponivel = disponivel ? "Domínio Indisponível": "Domínio Disponível";
-      })
+      const disponivel: boolean = data['registered'];
+      this.set_results(firstName, lastName, disponivel);
+      });
+  }
+
+  set_results(firstName, lastName, availability): void {
+    this.loading = false;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.dominioDisponivel = availability
+      ? `${firstName.toLocaleLowerCase()}${lastName.toLocaleLowerCase()}.com.br está disponível`
+      : `${firstName.toLocaleLowerCase()}${lastName.toLocaleLowerCase()}.com.br está indisponível`;
+  }
+
+  reset_results(): void {
+    this.firstName = '';
+    this.lastName = '';
+    this.dominioDisponivel = '';
   }
 
   getRandomItens(array, n): string[] {
-    var result = new Array(n),
+    let result = new Array(n),
         len = array.length,
         taken = new Array(len);
-    if (n > len)
-        throw new RangeError("getRandom: more elements taken than available");
+    if (n > len) { throw new RangeError('getRandom: more elements taken than available'); }
     while (n--) {
-        var x = Math.floor(Math.random() * len);
+        let x = Math.floor(Math.random() * len);
         result[n] = array[x in taken ? taken[x] : x];
         taken[x] = --len;
     }
