@@ -14,6 +14,7 @@ export class AppComponent {
   dominioDisponivel: String;
   botaoGerar = 'Gerar';
   loading = false;
+  domain: string;
 
   constructor(private http: HttpClient) {
 
@@ -22,7 +23,7 @@ export class AppComponent {
   generate_gym_name(): void {
     this.reset_results();
 
-    this.loading = true
+    this.loading = true;
     this.botaoGerar = 'Gerar novamente!';
 
     const names = ['Body', 'Build', 'Force', 'Form', 'Shape', 'Energy', 'Life', 'Sport', 'Fit',
@@ -59,15 +60,17 @@ export class AppComponent {
     this.loading = false;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.domain = `${firstName.toLocaleLowerCase()}${lastName.toLocaleLowerCase()}.com.br`;
     this.dominioDisponivel = availability
-      ? `${firstName.toLocaleLowerCase()}${lastName.toLocaleLowerCase()}.com.br está disponível`
-      : `${firstName.toLocaleLowerCase()}${lastName.toLocaleLowerCase()}.com.br está indisponível`;
+      ? ' está indisponível'
+      : 'está disponível';
   }
 
   reset_results(): void {
     this.firstName = '';
     this.lastName = '';
     this.dominioDisponivel = '';
+    this.domain = '';
   }
 
   getRandomItens(array, n): string[] {
